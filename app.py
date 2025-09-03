@@ -122,7 +122,7 @@ with st.container():
     col1, col2 = st.columns([2, 1])
     with col1:
         st.header("💳 Instant Cash on Credit Cards – 24/7 Service")
-        st.subheader("Sri Gayathri Traders | Chennai's Trusted Credit Card Swipe Service")
+        st.subheader("Sri Gayathri Traders | Hyderabad's Trusted Credit Card Swipe Service")
         st.write("We provide **secure, fast, and affordable** cash withdrawal on all major credit cards with just **2% service charge** and **zero utility charges**.")
         st.markdown("### 📱 Call or WhatsApp: **9505870597**")
         st.markdown("👉 Available 24/7 for emergency needs.")
@@ -170,7 +170,7 @@ with st.container():
     st.markdown('<div class="section">', unsafe_allow_html=True)
     st.header("✅ Why Choose Us?")
     st.write("""
-- **Lowest Fees in Chennai** – Flat **2% service charge**, no hidden costs.  
+- **Lowest Fees in Hyderabad** – Flat **2% service charge**, no hidden costs.  
 - **Instant Processing** – Get cash in hand within minutes.  
 - **Secure & Confidential** – 100% trusted and verified transactions.  
 - **All Banks Supported** – Visa, MasterCard, Rupay, AmEx, and more.  
@@ -183,7 +183,7 @@ st.markdown('<div id="reviews" class="anchor"></div>', unsafe_allow_html=True)
 with st.container():
     st.markdown('<div class="section">', unsafe_allow_html=True)
     st.header("⭐ Client Reviews")
-    st.success("'Got cash in just 10 minutes. No extra charges. Best service in Chennai!' – Rajesh K.")
+    st.success("'Got cash in just 10 minutes. No extra charges. Best service in Hyderabad!' – Rajesh K.")
     st.info("'Helped me with urgent travel booking. Smooth and trustworthy.' – Priya S.")
     st.warning("'Professional, fast, and affordable. Highly recommended.' – Meena R.")
     st.markdown('</div>', unsafe_allow_html=True)
@@ -208,7 +208,7 @@ with st.container():
     st.write("For quick service, reach out now:")
     st.markdown("### 📱 Call: [9505870597](tel:+919505870597)")
     st.markdown("### 💬 WhatsApp: [Click to Chat](https://wa.me/919505870597)")
-    st.write("📍 Location: Chennai, Tamil Nadu")
+    st.write("📍 Location: Hyderabd, Telangana")
     st.write("Available **24/7** for emergency needs.")
     st.markdown('</div>', unsafe_allow_html=True)
 
