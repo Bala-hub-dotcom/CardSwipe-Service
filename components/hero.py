@@ -1,3 +1,4 @@
+import os
 import streamlit as st
 import streamlit.components.v1 as components
 import base64
@@ -8,7 +9,10 @@ def get_base64_image(image_path):
         return base64.b64encode(img_file.read()).decode()
 
 # Replace with your image path
-card_img_base64 = get_base64_image(r"\assets\card image.png")
+# Build correct relative path
+BASE_DIR = os.path.dirname(os.path.dirname(__file__))   # project root
+card_img_path = os.path.join(BASE_DIR, "assets", "card_image.png")
+card_img_base64 = get_base64_image(card_img_path)
 
 def render_hero(height=550, width="100%"):  # Decreased height
     hero_html = f"""
