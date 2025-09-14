@@ -6,7 +6,7 @@ def get_base64_image(image_path):
     with open(image_path, "rb") as img_file:
         return base64.b64encode(img_file.read()).decode()
 
-card_img_base64 = get_base64_image(r"D:\MyApps\CardSwipe\assets\rewards points.png")
+card_img_base64 = get_base64_image(r"\assets\rewards points.png")
 
 def render_benifits():
     benifits = f"""

@@ -8,7 +8,7 @@ def get_base64_image(image_path):
         return base64.b64encode(img_file.read()).decode()
 
 # Replace with your image path
-card_img_base64 = get_base64_image(r"D:\MyApps\CardSwipe\assets\card image.png")
+card_img_base64 = get_base64_image(r"\assets\card image.png")
 
 def render_hero(height=550, width="100%"):  # Decreased height
     hero_html = f"""
