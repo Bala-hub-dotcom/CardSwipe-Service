@@ -8,7 +8,7 @@ def get_base64_image(image_path):
         return base64.b64encode(img_file.read()).decode()
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))   # project root
-card_img_path = os.path.join(BASE_DIR, "assets", "rewards points.png")
+card_img_path = os.path.join(BASE_DIR, "assets", "reward_points.png")
 card_img_base64 = get_base64_image(card_img_path)
 
 def render_benifits():
