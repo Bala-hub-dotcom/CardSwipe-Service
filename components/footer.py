@@ -1,72 +1,49 @@
-import streamlit as st
 import streamlit.components.v1 as components
+from components.chat_popup import render_chat_popup  # ✅ Import chatbot
 
 def render_footer():
-    """Render full footer with business info, nav links, social media, cards, and legal"""
+    """Render footer with enhanced quick links navigation and embedded chat."""
 
-    footer_html = """
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Footer</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    chatbot_html = render_chat_popup()  # ✅ Get chatbot HTML
+
+    footer_html = f"""
     <style>
-      .footer {
-          background: linear-gradient(135deg, #0f172a, #1e293b);
-          color: #f8fafc;
-          padding: 2rem 1rem;
-          margin-top: 2rem;
-          font-size: 0.9rem;
-          border-top: 1px solid #334155;
-          border-radius: 1rem 1rem 0 0;
-          font-family: 'Segoe UI', sans-serif;
-      }
-      .footer-container {
-          max-width: 1100px;
-          margin: auto;
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-          gap: 1.5rem;
-      }
-      .footer h4 {
-          color: #38bdf8;
-          margin-bottom: 0.8rem;
-          font-size: 1rem;
-      }
-      .footer a {
-          color: #f8fafc;
-          text-decoration: none;
-          display: block;
-          margin: 0.3rem 0;
-          transition: color 0.3s ease;
-      }
-      .footer a:hover {
-          color: #38bdf8;
-      }
-      .social-icons a {
-          display: inline-block;
-          margin-right: 0.5rem;
-          font-size: 1.2rem;
-      }
-      .cards img {
-          height: 30px;
-          margin-right: 0.5rem;
-          margin-top: 0.5rem;
-          filter: drop-shadow(0 1px 2px rgba(0,0,0,0.4));
-      }
-      .footer-bottom {
-          text-align: center;
-          margin-top: 1.5rem;
-          font-size: 0.85rem;
-          border-top: 1px solid #334155;
-          padding-top: 1rem;
-          color: #94a3b8;
-      }
+    .footer {{
+        background: linear-gradient(135deg, #0f172a, #1e293b);
+        color: #f8fafc;
+        padding: 2rem 1rem 2.5rem; /* reduced bottom padding */
+        margin-top: 2rem;
+        font-size: 0.9rem;
+        border-top: 1px solid #334155;
+        border-radius: 1rem 1rem 0 0;
+        font-family: 'Segoe UI', sans-serif;
+        position: relative;
+    }}
+    .footer-container {{
+        max-width: 1100px;
+        margin: auto;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 1.5rem;
+    }}
+    .footer h4 {{
+        color: #38bdf8;
+        margin-bottom: 0.8rem;
+        font-size: 1rem;
+    }}
+    .footer a {{
+        color: #f8fafc;
+        text-decoration: none;
+        display: block;
+        margin: 0.3rem 0;
+        transition: color 0.3s ease;
+        cursor: pointer;
+    }}
+    .footer a:hover {{ color: #38bdf8; }}
+    .social-icons a {{ display: inline-block; margin-right: 0.5rem; font-size: 1.2rem; }}
+    .cards img {{ height: 30px; margin-right: 0.5rem; margin-top: 0.5rem; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.4)); }}
+    .footer-bottom {{ text-align: center; margin-top: 1.2rem; font-size: 0.85rem; border-top: 1px solid #334155; padding-top: 1rem; color: #94a3b8; }}
     </style>
-    </head>
-    <body>
 
     <div class="footer">
       <div class="footer-container">
@@ -84,12 +61,15 @@ def render_footer():
         <!-- Navigation -->
         <div>
           <h4>🔗 Quick Links</h4>
-          <a href="#hero">Home</a>
-          <a href="#services">Services</a>
-          <a href="#why-us">Why Choose Us</a>
-          <a href="#reviews">Reviews</a>
-          <a href="#faq">FAQ</a>
-          <a href="#contact">Contact</a>
+          <a href="#home" data-anchor="home">Home</a>
+          <a href="#how-it-works" data-anchor="how-it-works">How It Works</a>
+          <a href="#services" data-anchor="services">Services</a>
+          <a href="#why-us" data-anchor="why-us">Why Choose Us</a>
+          <a href="#reviews" data-anchor="reviews">Reviews</a>
+          <a href="#faq" data-anchor="faq">FAQ</a>
+          <a href="#contact" data-anchor="contact">Contact</a>
+          <a href="#" data-open="terms">Terms & Conditions</a>
+          <a href="#" data-open="privacy">Privacy Policy</a>
         </div>
 
         <!-- Social Media -->
@@ -115,17 +95,46 @@ def render_footer():
         </div>
       </div>
 
-      <!-- Footer Bottom -->
       <div class="footer-bottom">
         <p>© 2025 <strong>Sri Gayathri Traders</strong> | All Rights Reserved.</p>
-        <p><a href="#terms">Terms & Conditions</a> | <a href="#privacy">Privacy Policy</a></p>
         <p>⚠️ Disclaimer: We do not provide personal loans. Our service is strictly card-based spot cash withdrawal.</p>
         <p>Designed by <strong>Balachandrasekhar</strong></p>
       </div>
+
+      <!-- ✅ Chatbot injected here -->
+      {chatbot_html}
     </div>
 
-    </body>
-    </html>
+    <script>
+    // Footer: intercept quick link clicks to scroll parent page or open new tab for terms/privacy
+    (function() {{
+      function openNewTabTo(hash) {{
+        try {{
+          const base = window.top.location.href.split('#')[0].split('?')[0];
+          window.open(base + hash, '_blank');
+        }} catch (e) {{ /* ignore */ }}
+      }}
+      function scrollToAnchor(id) {{
+        try {{
+          const doc = window.top.document;
+          const el = doc.getElementById(id);
+          if (el) el.scrollIntoView({{ behavior: 'smooth', block: 'start' }});
+        }} catch (e) {{ /* ignore */ }}
+      }}
+      document.addEventListener('click', function(e) {{
+        const a1 = e.target.closest('a[data-anchor]');
+        if (a1) {{ e.preventDefault(); scrollToAnchor(a1.getAttribute('data-anchor')); return; }}
+        const a2 = e.target.closest('a[data-open]');
+        if (a2) {{
+          e.preventDefault();
+          const which = a2.getAttribute('data-open');
+          // open as standalone page using query parameter to let main.py render just that section
+          const target = which === 'terms' ? '?page=terms' : '?page=privacy';
+          openNewTabTo(target);
+        }}
+      }});
+    }})();
+    </script>
     """
 
-    components.html(footer_html, height=500, width="100%", scrolling=False)
+    components.html(footer_html, height=620, width="100%", scrolling=False)
