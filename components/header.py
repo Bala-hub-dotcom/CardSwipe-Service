@@ -1,56 +1,164 @@
 import streamlit as st
+import base64
+
+def get_base64_image(image_path):
+    with open(image_path, "rb") as img_file:
+        return base64.b64encode(img_file.read()).decode()
 
 def render_header():
-    st.markdown(
-        """
+    if "header_rendered" not in st.session_state:
+        logo_base64 = get_base64_image("./assets/Sri Gayatri traders.png")
+
+        st.markdown(
+            f"""
 <style>
-/* Full navbar styling */
-.navbar {
-  position: sticky; top: 0; z-index: 1000;
-  margin-top: 10px; /* add space above header */
+html {{
+  scroll-behavior: smooth;
+}}
+
+.navbar {{
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  margin: 0;
+  margin-top: 2rem;
+  padding: 0;
   width: 100%;
-  background: rgba(15, 23, 42, 0.9);
+  background: rgba(15, 23, 42, 0.95);
   backdrop-filter: blur(10px);
   border-radius: 12px;
   box-shadow: 0 12px 28px rgba(0,0,0,0.25);
-}
-.navbar-inner { max-width: 1200px; margin: 0 auto; padding: .9rem 1rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
-.brand { font-weight: 900; letter-spacing: -0.02em; text-decoration: none; color: #e2e8f0; display: inline-flex; align-items: center; gap: .6rem; }
-.brand .grad { background: linear-gradient(90deg, #60a5fa, #22c55e); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
-.nav-links { display: flex; align-items: center; gap: .5rem; }
-.nav-link { color: #e2e8f0; text-decoration: none; padding: .45rem .75rem; border-radius: 10px; transition: all .2s ease; opacity: .95; }
-.nav-link:hover { background: rgba(255,255,255,.08); transform: translateY(-1px); }
-.nav-link.active { background: rgba(96,165,250,.18); border: 1px solid rgba(96,165,250,.35); }
-.nav-link.whatsapp { background: linear-gradient(135deg, #25D366, #128C7E); color: #fff; box-shadow: 0 10px 25px rgba(37,211,102,.35); }
-.nav-link.whatsapp:hover { box-shadow: 0 14px 35px rgba(37,211,102,.45); }
-.menu-toggle { display: none; color: #e2e8f0; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.2); padding: .35rem .6rem; border-radius: 8px; }
-@media (max-width: 820px) { .menu-toggle { display: inline-flex; } .nav-links { display: none; } .nav-links.open { display: grid; grid-template-columns: repeat(3, 1fr); gap: .5rem; margin-top: .5rem; } .navbar-inner { flex-wrap: wrap; } }
+  font-family: 'Segoe UI', sans-serif;
+}}
+
+.navbar-inner {{
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: .9rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}}
+
+.brand {{
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  font-weight: 900;
+  font-size: 1.2rem;
+  color: #facc15;
+}}
+
+.brand img {{
+  height: 36px;
+  border-radius: 6px;
+}}
+
+.nav-links {{
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  flex-wrap: wrap;
+}}
+
+.nav-link {{
+  color: white !important;
+  text-decoration: none !important;
+  padding: 0.65rem 1rem;
+  border-radius: 8px;
+  transition: all .2s ease;
+  font-size: 0.95rem;
+}}
+
+.nav-link:hover {{
+  background: rgba(255,255,255,.08);
+  transform: translateY(-1px);
+}}
+
+.nav-link.active {{
+  background: rgba(96,165,250,.18);
+  border: 1px solid rgba(96,165,250,.35);
+}}
+
+.nav-link.whatsapp {{
+  background-color: #facc15;
+  color: white !important;
+  box-shadow: 0 4px 10px rgba(250, 204, 21, 0.35);
+}}
+
+.nav-link.whatsapp:hover {{
+  background-color: #fbbf24;
+  box-shadow: 0 4px 10px rgba(250, 191, 36, 0.45);
+}}
+
+.menu-toggle {{
+  display: none;
+  font-size: 1.4rem;
+  color: white;
+  background: none;
+  border: none;
+  cursor: pointer;
+}}
+
+@media (max-width: 820px) {{
+  .menu-toggle {{
+    display: block;
+  }}
+  .nav-links {{
+    flex-direction: column;
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.4s ease;
+    width: 100%;
+    margin-top: .2rem;
+  }}
+  .nav-links.open {{
+    max-height: 500px;
+  }}
+}}
+
+
 </style>
 
-<nav id=\"top-navbar\" class=\"navbar\">
-  <div class=\"navbar-inner\">
-    <a href=\"#home\" class=\"brand\"><span class=\"grad\">💳 Sri Gayathri Traders</span></a>
-    <button id=\"menu-toggle\" class=\"menu-toggle\" aria-label=\"Toggle menu\">☰</button>
-    <div id=\"nav-links\" class=\"nav-links\">
-      <a class=\"nav-link\" href=\"#home\">Home</a>
-      <a class=\"nav-link\" href=\"#how-it-works\">How It Works</a>
-      <a class=\"nav-link\" href=\"#services\">Services</a>
-      <a class=\"nav-link\" href=\"#why-us\">Why Us</a>
-      <a class=\"nav-link\" href=\"#reviews\">Reviews</a>
-      <a class=\"nav-link\" href=\"#faq\">FAQ</a>
-      <a class=\"nav-link\" href=\"#contact\">Contact</a>
-      <a class=\"nav-link whatsapp\" href=\"https://wa.me/919505870597\" target=\"_blank\">WhatsApp Us</a>
+<nav class="navbar" role="navigation" aria-label="Main Navigation">
+  <div class="navbar-inner">
+    <div class="brand">
+      <img src="data:image/png;base64,{logo_base64}" alt="Logo" />
+      <span>Sri Gayathri Traders</span>
+    </div>
+    <button class="menu-toggle" onclick="document.getElementById('nav-links').classList.toggle('open')">☰</button>
+    <div id="nav-links" class="nav-links">
+      <a class="nav-link" href="#home">Home</a>
+      <a class="nav-link" href="#how-it-works">How It Works</a>
+      <a class="nav-link" href="#services">Services</a>
+      <a class="nav-link" href="#why-us">Why Us</a>
+      <a class="nav-link" href="#reviews">Reviews</a>
+      <a class="nav-link" href="#faq">FAQ</a>
+      <a class="nav-link" href="#contact">Contact</a>
+      <a class="nav-link whatsapp" href="https://wa.me/919505870597" target="_blank">WhatsApp Us</a>
     </div>
   </div>
 </nav>
-<script>
-  document.addEventListener('click', (e) => {
-    const btn = e.target.closest('#menu-toggle');
-    if (!btn) return;
-    const links = document.getElementById('nav-links');
-    if (links) links.classList.toggle('open');
-  });
-</script>
 """,
-        unsafe_allow_html=True,
-    )
+            unsafe_allow_html=True,
+        )
+
+        st.markdown("""
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const toggle = document.querySelector(".menu-toggle");
+  const navLinks = document.getElementById("nav-links");
+  toggle.addEventListener("click", function() {
+    navLinks.classList.toggle("open");
+  });
+  navLinks.querySelectorAll("a").forEach(link => {
+    link.addEventListener("click", () => {
+      navLinks.classList.remove("open");
+    });
+  });
+});
+</script>
+""", unsafe_allow_html=True)
+
+        st.session_state.header_rendered = True

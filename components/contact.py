@@ -2,7 +2,7 @@ import streamlit as st
 import streamlit.components.v1 as components
 
 def render_contact():
-    """Render the Contact section with modern styling, animations, and a contact form"""
+    """Render the Contact section with scroll-triggered animations and visible phone/WhatsApp routing"""
 
     contact_html = """
     <!DOCTYPE html>
@@ -14,27 +14,40 @@ def render_contact():
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
       :root {
-        --primary: #3b82f6;
-        --success: #16a34a;
-        --bg-dark: #0a2342;
-        --text-light: #f4f7fb;
-        --muted: #cbd5e1;
+        --primary: #facc15;
+        --text-white: #ffffff;
+        --card-bg: rgba(255,255,255,0.05);
       }
-      body {
+      html, body {
         margin: 0;
+        padding: 0;
         font-family: 'Inter', sans-serif;
         background: #0b1220;
-        color: var(--text-light);
+        color: var(--text-white);
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
       }
       section {
-        padding: 3rem 1.5rem;
         max-width: 900px;
-        margin: auto;
+        width: 100%;
+        margin: 0 auto;
+        padding: 0;
         text-align: center;
       }
       h2 {
         font-size: 2rem;
-        margin-bottom: 2rem;
+        margin: 0;
+        padding: 1rem 0 2rem;
+        color: var(--primary);
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.6s ease, transform 0.6s ease;
+      }
+      h2.show {
+        opacity: 1;
+        transform: translateY(0);
       }
       .contact-grid {
         display: grid;
@@ -43,19 +56,23 @@ def render_contact():
         margin-bottom: 2rem;
       }
       .contact-card {
-        background: rgba(255,255,255,0.05);
+        background: var(--card-bg);
         border: 1px solid rgba(255,255,255,0.08);
         border-radius: 12px;
         padding: 1.5rem;
         text-align: center;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
         opacity: 0;
         transform: translateY(20px);
-        animation: fadeUp 0.6s forwards;
+        transition: opacity 0.6s ease, transform 0.6s ease;
       }
-      .contact-card:nth-child(1) { animation-delay: 0.2s; }
-      .contact-card:nth-child(2) { animation-delay: 0.4s; }
-      .contact-card:nth-child(3) { animation-delay: 0.6s; }
+      .contact-card.show {
+        opacity: 1;
+        transform: translateY(0);
+        animation: bounce 2s ease-in-out infinite;
+      }
+      .contact-card:nth-child(1) { transition-delay: 0.2s; }
+      .contact-card:nth-child(2) { transition-delay: 0.4s; }
+      .contact-card:nth-child(3) { transition-delay: 0.6s; }
       .contact-card:hover {
         transform: translateY(-3px);
         box-shadow: 0 8px 20px rgba(0,0,0,0.4);
@@ -64,30 +81,27 @@ def render_contact():
         display: inline-block;
         padding: 0.6rem 1.2rem;
         background: var(--primary);
-        color: white;
+        color: #000;
         border-radius: 8px;
         text-decoration: none;
         font-weight: 600;
         transition: background 0.3s ease;
       }
       a.contact-btn:hover {
-        background: #2563eb;
-      }
-      @keyframes fadeUp {
-        to { opacity: 1; transform: translateY(0); }
+        background: #eab308;
       }
       .info {
         font-size: 0.95rem;
-        color: var(--muted);
+        color: var(--text-white);
         margin-top: 0.5rem;
       }
-      /* Contact Form */
       form {
-        background: rgba(255,255,255,0.05);
+        background: var(--card-bg);
         border: 1px solid rgba(255,255,255,0.08);
         border-radius: 12px;
         padding: 1.5rem;
         text-align: left;
+        color: var(--text-white);
       }
       label {
         display: block;
@@ -108,7 +122,7 @@ def render_contact():
       }
       button {
         background: var(--primary);
-        color: white;
+        color: #000;
         padding: 0.6rem 1.2rem;
         border: none;
         border-radius: 8px;
@@ -118,21 +132,24 @@ def render_contact():
         transition: background 0.3s ease;
       }
       button:hover {
-        background: #2563eb;
+        background: #eab308;
+      }
+      @keyframes bounce {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-8px); }
       }
     </style>
     </head>
     <body>
-
     <section>
-      <h2>📞 Contact Us Now</h2>
+      <h2 id="contact-title">📞 Contact Us Now</h2>
       <div class="contact-grid">
         <div class="contact-card">
           <a href="tel:+919505870597" class="contact-btn">📞 Call Now</a>
-          <div class="info">Speak directly with our team</div>
+          <div class="info">+91 95058 70597</div>
         </div>
         <div class="contact-card">
-          <a href="https://wa.me/919505870597" class="contact-btn">💬 WhatsApp</a>
+          <a href="https://web.whatsapp.com/send?phone=919505870597" class="contact-btn" target="_blank">💬 WhatsApp</a>
           <div class="info">Chat with us instantly</div>
         </div>
         <div class="contact-card">
@@ -154,9 +171,20 @@ def render_contact():
         <button type="submit">Send Message</button>
       </form>
     </section>
+    <script>
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('show');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.2 });
 
+      document.querySelectorAll('.contact-card, #contact-title').forEach(el => observer.observe(el));
+    </script>
     </body>
     </html>
     """
 
-    components.html(contact_html, height=900, width="100%", scrolling=False)
+    components.html(contact_html, height=650, width="100%", scrolling=False)

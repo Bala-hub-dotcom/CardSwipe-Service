@@ -1,18 +1,15 @@
 import streamlit.components.v1 as components
-from components.chat_popup import render_chat_popup  # ✅ Import chatbot
 
 def render_footer():
     """Render footer with enhanced quick links navigation and embedded chat."""
-
-    chatbot_html = render_chat_popup()  # ✅ Get chatbot HTML
 
     footer_html = f"""
     <style>
     .footer {{
         background: linear-gradient(135deg, #0f172a, #1e293b);
         color: #f8fafc;
-        padding: 2rem 1rem 2.5rem; /* reduced bottom padding */
-        margin-top: 2rem;
+        padding: 1rem 0.5rem 1rem; /* reduced bottom padding */
+        margin-top: 0.2rem;
         font-size: 0.9rem;
         border-top: 1px solid #334155;
         border-radius: 1rem 1rem 0 0;
@@ -24,7 +21,7 @@ def render_footer():
         margin: auto;
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-        gap: 1.5rem;
+        gap: 1rem;
     }}
     .footer h4 {{
         color: #38bdf8;
@@ -98,11 +95,10 @@ def render_footer():
       <div class="footer-bottom">
         <p>© 2025 <strong>Sri Gayathri Traders</strong> | All Rights Reserved.</p>
         <p>⚠️ Disclaimer: We do not provide personal loans. Our service is strictly card-based spot cash withdrawal.</p>
-        <p>Designed by <strong>Balachandrasekhar</strong></p>
+        <p>Designed by <strong>Dev Solutions</strong></p>
       </div>
 
       <!-- ✅ Chatbot injected here -->
-      {chatbot_html}
     </div>
 
     <script>
@@ -137,4 +133,4 @@ def render_footer():
     </script>
     """
 
-    components.html(footer_html, height=620, width="100%", scrolling=False)
+    components.html(footer_html, height=450, width="100%", scrolling=False)

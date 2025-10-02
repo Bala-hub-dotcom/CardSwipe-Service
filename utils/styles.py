@@ -18,7 +18,7 @@ def load_css():
         }
         html, body, [data-testid="stAppViewContainer"] { background: var(--bg); color: var(--text); }
         /* Anchors for nav scrolling */
-        .anchor { position: relative; top: -80px; height: 0; visibility: hidden; }
+        .anchor { position: relative; top: -10px; height: 0; visibility: hidden; }
         /* remove extra padding at page bottom to avoid big gap after footer */
         .block-container { padding-bottom: 0 !important; }
         /* footer minimal margin-bottom to avoid gap */

@@ -2,8 +2,6 @@ import streamlit as st
 import streamlit.components.v1 as components
 
 def render_how_it_works():
-    """Render 'How It Works' section with responsive 3D icons, animation, and hover effects in a Streamlit iframe."""
-
     how_it_works = """
     <!DOCTYPE html>
     <html lang="en">
@@ -11,34 +9,34 @@ def render_how_it_works():
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <title>How It Works</title>
-      <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
       <style>
         :root {
-          --primary: #3b82f6;
-          --primary-dark: #2563eb;
-          --accent: #25d366;
+          --primary: #facc15;
+          --primary-dark: #fbbf24;
           --bg-dark: #0a2342;
           --text-light: #f4f7fb;
-          --muted: #cbd5e1;
         }
         html, body {
           margin: 0;
           padding: 0;
-          font-family: 'Inter', sans-serif;
+          font-family: 'Segoe UI', sans-serif;
           background: #0b1220;
           color: var(--text-light);
           width: 100vw;
-          height: 100%;
+          height: 60%;
         }
         section {
-          padding: 3rem 1.5rem;
+          padding: 0 1.5rem;
           max-width: 1100px;
           margin: auto;
         }
         h2 {
           font-size: 2rem;
-          margin-bottom: 2rem;
+          margin: 2rem 0;
           text-align: center;
+          background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
         }
         .steps {
           display: grid;
@@ -52,7 +50,6 @@ def render_how_it_works():
           box-shadow: 0 10px 30px rgba(0,0,0,0.3);
           text-align: center;
           transition: transform 0.3s ease, box-shadow 0.3s ease;
-          overflow: hidden;
         }
         .step:hover {
           transform: translateY(-5px);
@@ -64,19 +61,14 @@ def render_how_it_works():
           display: inline-block;
           padding: 15px;
           border-radius: 50%;
-          background: linear-gradient(145deg, #64b5f6, #1976d2);
+          background: linear-gradient(145deg, var(--primary), var(--primary-dark));
           box-shadow: 5px 5px 15px rgba(0,0,0,0.3), -5px -5px 15px rgba(255,255,255,0.1);
-          transform: rotateX(10deg) rotateY(-10deg);
-          transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        .step:hover .step-icon {
-          transform: rotateX(0deg) rotateY(0deg) scale(1.1);
-          box-shadow: 5px 5px 25px rgba(0,0,0,0.5), -5px -5px 25px rgba(255,255,255,0.15);
+          animation: bounce 2s ease-in-out infinite;
         }
         .step h3, .step p {
           opacity: 0;
           transform: translateY(15px);
-          transition: color 0.3s ease, transform 0.3s ease, background-color 0.3s ease;
+          animation: bounce 2s ease-in-out infinite;
         }
         .show .step h3 {
           animation: fadeUp 0.6s forwards ease-out;
@@ -88,6 +80,10 @@ def render_how_it_works():
         }
         @keyframes fadeUp {
           to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes bounce {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-10px); }
         }
         .step h3 {
           position: relative;
@@ -116,7 +112,7 @@ def render_how_it_works():
         .step:hover p {
           color: #ffffff;
           transform: translateY(-3px);
-          background-color: rgba(59, 130, 246, 0.15);
+          background-color: rgba(250, 204, 21, 0.15);
         }
         .fade-in {
           opacity: 0;
@@ -189,6 +185,4 @@ def render_how_it_works():
     </body>
     </html>
     """
-
-    # Increased height for content, fixed best practices for iframe embedding in Streamlit
-    components.html(how_it_works, height=650, scrolling=False)
+    components.html(how_it_works, height=450, scrolling=False)

@@ -1,9 +1,6 @@
 import streamlit.components.v1 as components
 
-
 def render_chat_popup():
-    """Render floating chatbot with typing animation, auto-suggestions, and expandable welcome"""
-
     chat_html = """
     <style>
       .chat-toggle {
@@ -45,6 +42,17 @@ def render_chat_popup():
         font-weight: 600;
         text-align: center;
         border-bottom: 1px solid #334155;
+        position: relative;
+      }
+      .chat-close {
+        position: absolute;
+        top: 6px;
+        right: 10px;
+        background: none;
+        border: none;
+        color: #94a3b8;
+        font-size: 1.2rem;
+        cursor: pointer;
       }
       .chat-body {
         padding: 1rem;
@@ -80,19 +88,37 @@ def render_chat_popup():
         font-size: 0.85rem;
         color: #94a3b8;
       }
+      .suggestion-btn {
+        display: block;
+        background: #1e293b;
+        color: #f4f7fb;
+        border: 1px solid #334155;
+        border-radius: 6px;
+        padding: 0.4rem 0.6rem;
+        margin: 0.3rem 0;
+        cursor: pointer;
+        font-size: 0.85rem;
+        text-align: left;
+        transition: background 0.3s ease;
+      }
+      .suggestion-btn:hover {
+        background: #334155;
+      }
     </style>
 
-    <button class="chat-toggle" onclick="document.querySelector('.chat-window').classList.toggle('active')">💬 Chat</button>
+    <button class="chat-toggle" onclick="toggleChat()">💬 Chat</button>
 
-    <div class="chat-window">
-      <div class="chat-header">Sri Gayathri Chat</div>
+    <div class="chat-window" id="chat-window">
+      <div class="chat-header">
+        Sri Gayathri Chat
+        <button class="chat-close" onclick="toggleChat()">❌</button>
+      </div>
       <div class="chat-body" id="chat-body">
         <p>👋 Welcome! Ask us anything about our service.</p>
         <div class="suggestions">
-          Try: <br>
-          • How much cash can I get?<br>
-          ��� Are you open at night?<br>
-          • Which cards are accepted?
+          <button class="suggestion-btn" onclick="handleSuggestion('how much cash can i get')">💰 How much cash can I get?</button>
+          <button class="suggestion-btn" onclick="handleSuggestion('are you open at night')">🌙 Are you open at night?</button>
+          <button class="suggestion-btn" onclick="handleSuggestion('which cards are accepted')">💳 Which cards are accepted?</button>
         </div>
       </div>
       <div class="chat-input">
@@ -101,6 +127,10 @@ def render_chat_popup():
     </div>
 
     <script>
+      function toggleChat() {
+        document.getElementById("chat-window").classList.toggle("active");
+      }
+
       const faq = {
         "is this service legal": "✅ Yes, 100% legitimate and licensed financial service.",
         "which cards are accepted": "💳 We accept Visa, MasterCard, American Express, and RuPay.",
@@ -119,38 +149,41 @@ def render_chat_popup():
         "do you operate on holidays": "✅ Yes, we are open 365 days a year."
       };
 
+      function handleSuggestion(query) {
+        const body = document.getElementById("chat-body");
+        body.innerHTML += `<p><strong>You:</strong> ${query}</p>`;
+        body.innerHTML += `<p class="typing" id="typing">Bot is typing...</p>`;
+
+        let bestMatch = null;
+        let bestScore = 0;
+
+        for (const q in faq) {
+          const score = similarity(query, q);
+          if (score > bestScore) {
+            bestScore = score;
+            bestMatch = q;
+          }
+        }
+
+        setTimeout(() => {
+          const typing = document.getElementById("typing");
+          if (typing) typing.remove();
+          if (bestScore >= 0.6) {
+            body.innerHTML += `<p><strong>Bot:</strong> ${faq[bestMatch]}</p>`;
+          } else {
+            body.innerHTML += `<p><strong>Bot:</strong> 🤖 Sorry, I couldn't find a good match. Please call or WhatsApp us for help.</p>`;
+          }
+          body.scrollTop = body.scrollHeight;
+        }, 800);
+      }
+
       function handleChat(e) {
         if (e.key === "Enter") {
           const input = document.getElementById("chat-input");
           const query = input.value.trim().toLowerCase();
           if (!query) return;
-
-          const body = document.getElementById("chat-body");
-          body.innerHTML += `<p><strong>You:</strong> ${query}</p>`;
-          body.innerHTML += `<p class="typing" id="typing">Bot is typing...</p>`;
-
-          let bestMatch = null;
-          let bestScore = 0;
-
-          for (const q in faq) {
-            const score = similarity(query, q);
-            if (score > bestScore) {
-              bestScore = score;
-              bestMatch = q;
-            }
-          }
-
-          setTimeout(() => {
-            const typing = document.getElementById("typing");
-            if (typing) typing.remove();
-            if (bestScore >= 0.6) {
-              body.innerHTML += `<p><strong>Bot:</strong> ${faq[bestMatch]}</p>`;
-            } else {
-              body.innerHTML += `<p><strong>Bot:</strong> 🤖 Sorry, I couldn't find a good match. Please call or WhatsApp us for help.</p>`;
-            }
-            input.value = "";
-            body.scrollTop = body.scrollHeight;
-          }, 800);
+          handleSuggestion(query);
+          input.value = "";
         }
       }
 
@@ -163,4 +196,4 @@ def render_chat_popup():
     </script>
     """
 
-    return chat_html
+    components.html(chat_html, height=0, width=0)

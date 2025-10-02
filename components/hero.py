@@ -3,35 +3,36 @@ import streamlit as st
 import streamlit.components.v1 as components
 import base64
 
-# ---------- Convert image → base64 ----------
+# Convert image to base64
 def get_base64_image(image_path):
     with open(image_path, "rb") as img_file:
         return base64.b64encode(img_file.read()).decode()
 
-# Replace with your image path
-# Build correct relative path
-BASE_DIR = os.path.dirname(os.path.dirname(__file__))   # project root
+# Image path
+BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 card_img_path = os.path.join(BASE_DIR, "assets", "card_image.png")
 card_img_base64 = get_base64_image(card_img_path)
 
-def render_hero(height=550, width="100%"):  # Decreased height
+def render_hero(height=550, width="100%"):
     hero_html = f"""
     <style>
-    /* Container */
+    .hero-container, .hero-container * {{
+        font-family: 'Segoe UI', sans-serif;
+    }}
+
     .hero-container {{
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 1rem 5%;
+        padding: 0 5%;
+        margin: 0;
         background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
-        border-radius: 0;
         color: white;
         position: relative;
         overflow: hidden;
         gap: 2rem;
     }}
 
-    /* Text Section */
     .hero-text {{
         flex: 1;
         z-index: 2;
@@ -40,7 +41,7 @@ def render_hero(height=550, width="100%"):  # Decreased height
     .hero-text h3 {{
         font-size: 2rem;
         font-weight: 800;
-        background: linear-gradient(90deg, #64b5f6, #1976d2);
+        background: linear-gradient(90deg, #facc15, #fbbf24);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         margin-bottom: 2rem;
@@ -51,7 +52,6 @@ def render_hero(height=550, width="100%"):  # Decreased height
         animation: fadeInDown 1s forwards;
     }}
 
-    /* Bullet Cards */
     .bullet-cards {{
         display: flex;
         flex-direction: column;
@@ -59,7 +59,7 @@ def render_hero(height=550, width="100%"):  # Decreased height
     }}
     .bullet-card {{
         background: rgba(255, 255, 255, 0.1);
-        border-left: 5px solid #64b5f6;
+        border-left: 5px solid #facc15;
         padding: 1rem 1.5rem;
         border-radius: 12px;
         box-shadow: 0 8px 20px rgba(0,0,0,0.3);
@@ -67,14 +67,13 @@ def render_hero(height=550, width="100%"):  # Decreased height
         font-weight: 500;
         opacity: 0;
         transform: translateY(-50px);
-        animation: dropIn 0.8s forwards;
+        animation: dropIn 0.8s forwards, bounce 2s ease-in-out infinite;
     }}
     .bullet-card:nth-child(1) {{ animation-delay: 0.2s; }}
     .bullet-card:nth-child(2) {{ animation-delay: 0.4s; }}
     .bullet-card:nth-child(3) {{ animation-delay: 0.6s; }}
     .bullet-card:nth-child(4) {{ animation-delay: 0.8s; }}
 
-    /* Buttons */
     .hero-buttons {{
         display: flex;
         gap: 1rem;
@@ -86,37 +85,22 @@ def render_hero(height=550, width="100%"):  # Decreased height
         animation-delay: 1.2s;
     }}
 
-    .cta-button {{
-        text-decoration: none;
-        background: linear-gradient(135deg,#2196f3 0%,#1976d2 100%);
-        color: white;
+    .cta-button, .whatsapp-button {{
+        text-decoration: none !important;
+        background-color: #facc15;
+        color: black;
         padding: 14px 28px;
         border-radius: 50px;
         font-weight: 600;
-        box-shadow: 0 4px 14px rgba(33,150,243,0.35);
+        box-shadow: 0 4px 14px rgba(250, 204, 21, 0.3);
         transition: transform 0.2s ease, box-shadow 0.2s ease;
+        animation: bounce 2s ease-in-out infinite;
     }}
-    .cta-button:hover {{
+    .cta-button:hover, .whatsapp-button:hover {{
         transform: translateY(-4px);
-        box-shadow: 0 10px 30px rgba(33,150,243,0.45);
+        box-shadow: 0 10px 30px rgba(250, 191, 36, 0.45);
     }}
 
-    .whatsapp-button {{
-        text-decoration: none;
-        background: linear-gradient(135deg,#25D366 0%,#128C7E 100%);
-        color: white;
-        padding: 14px 28px;
-        border-radius: 50px;
-        font-weight: 600;
-        box-shadow: 0 4px 14px rgba(37,211,102,0.3);
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }}
-    .whatsapp-button:hover {{
-        transform: translateY(-4px);
-        box-shadow: 0 10px 30px rgba(37,211,102,0.45);
-    }}
-
-    /* Image Section */
     .hero-image {{
         flex: 1;
         display: flex;
@@ -127,41 +111,29 @@ def render_hero(height=550, width="100%"):  # Decreased height
     .hero-image img {{
         max-width: 550px;
         height: auto;
-        animation: float 3s ease-in-out infinite;
         border-radius: 0px;
         box-shadow: 0 0px 0px rgba(0,0,0,0.5);
     }}
 
-    /* Animations */
     @keyframes fadeInDown {{
-        to {{
-            opacity: 1;
-            transform: translateY(0);
-        }}
+        to {{ opacity: 1; transform: translateY(0); }}
     }}
     @keyframes fadeInUp {{
-        to {{
-            opacity: 1;
-            transform: translateY(0);
-        }}
-    }}
-    @keyframes float {{
-        0%, 100% {{ transform: translateY(0); }}
-        50% {{ transform: translateY(-20px); }}
+        to {{ opacity: 1; transform: translateY(0); }}
     }}
     @keyframes dropIn {{
-        to {{
-            opacity: 1;
-            transform: translateY(0);
-        }}
+        to {{ opacity: 1; transform: translateY(0); }}
+    }}
+    @keyframes bounce {{
+        0%, 100% {{ transform: translateY(0); }}
+        50% {{ transform: translateY(-10px); }}
     }}
 
-    /* Responsive */
     @media (max-width: 992px) {{
         .hero-container {{
             flex-direction: column;
             text-align: center;
-            padding: 2rem 5%;
+            padding: 0 5%;
             gap: 2rem;
         }}
         .hero-image img {{ max-width: 90%; }}

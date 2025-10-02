@@ -1,7 +1,7 @@
 import streamlit.components.v1 as components
 
 def render_terms():
-    """Render Terms & Conditions section"""
+    """Render Terms & Conditions section with animated header"""
 
     terms_html = """
     <!DOCTYPE html>
@@ -12,8 +12,12 @@ def render_terms():
     <title>Terms & Conditions</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-      body {
+      html, body, section {
         margin: 0;
+        padding: 0;
+        overflow: hidden;
+      }
+      body {
         font-family: 'Inter', sans-serif;
         background: #0b1220;
         color: #f4f7fb;
@@ -27,8 +31,17 @@ def render_terms():
       h2 {
         font-size: 2rem;
         margin-bottom: 1rem;
-        color: #38bdf8;
         text-align: center;
+        background: linear-gradient(90deg, #facc15, #fbbf24);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.6s ease, transform 0.6s ease;
+      }
+      h2.show {
+        opacity: 1;
+        transform: translateY(0);
       }
       h3 {
         margin-top: 1.5rem;
@@ -46,7 +59,7 @@ def render_terms():
     </head>
     <body>
     <section>
-      <h2>📜 Terms & Conditions</h2>
+      <h2 id="terms-title">📜 Terms & Conditions</h2>
       <p>Welcome to Sri Gayathri Traders. By using our services, you agree to the following terms and conditions. Please read them carefully.</p>
 
       <h3>1. Service Scope</h3>
@@ -67,8 +80,20 @@ def render_terms():
       <h3>6. Amendments</h3>
       <p>We reserve the right to update these terms at any time. Continued use of our services constitutes acceptance of the updated terms.</p>
     </section>
+    <script>
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('show');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.2 });
+
+      observer.observe(document.getElementById('terms-title'));
+    </script>
     </body>
     </html>
     """
 
-    components.html(terms_html, height=800, width="100%", scrolling=True)
+    components.html(terms_html, height=800, width="100%", scrolling=False)

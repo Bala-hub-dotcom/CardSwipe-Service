@@ -12,9 +12,16 @@ from components.feq import render_faq
 from components.cardsMarquee import render_cards_marquee
 from components.terms import render_terms
 from components.privacy import render_privacy
-from components.chat_popup import render_chat_popup
 from components.google_map import render_google_map
 from utils.styles import load_css
+
+st.markdown("""
+    <style>
+    .block-container {
+        padding-top: 0rem !important;
+    }
+    </style>
+""", unsafe_allow_html=True)
 
 # ---------- PAGE CONFIG ----------
 st.set_page_config(
@@ -66,8 +73,6 @@ def main():
     st.markdown('<div id="faq" class="anchor"></div>', unsafe_allow_html=True)
     render_faq()             # Reviews & FAQ section
 
-    render_cards_marquee()   # Cards Marquee section
-
     #st.markdown('<div id="terms" class="anchor"></div>', unsafe_allow_html=True)
     #render_terms()           # Terms section
 
@@ -80,13 +85,23 @@ def main():
     st.markdown('<div id="contact" class="anchor"></div>', unsafe_allow_html=True)
     render_contact()         # Contact section
 
+    render_cards_marquee()   # Cards Marquee section
+
     # Google Map component above the footer
     render_google_map()
 
     render_footer()          # Footer
+   
+   
  
-
-    st.markdown('</div>', unsafe_allow_html=True)
+    st.markdown("""
+    <style>
+    body { margin-bottom: 0 !important; }
+    .main-container { padding-bottom: 0 !important; margin-bottom: 0 !important; }
+    .stApp { padding-bottom: 0 !important; }
+    </style>
+""", unsafe_allow_html=True)
+    
 
 if __name__ == "__main__":
     main()
